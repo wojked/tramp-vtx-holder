@@ -28,8 +28,10 @@ vtx_holder(STANDOFF_DISTANCE, STANDOFF_DIAMETER, MOUNTH_HEIGHT,
 
 module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width, vtx_height_1, vtx_height_2_antenna, tolerance) {
     
-    shelf_height = (mount_height - vtx_height_1) / 2;
     shelf_depth = 4;
+    shelf_height = 2;
+    
+    shelf_offset = (mount_height - vtx_height_1) / 2;    
     
     union(){
         difference(){
@@ -37,7 +39,7 @@ module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width,
             translate([0,-vtx_width, mount_height/2])    
             cube([vtx_width, 2*vtx_width, vtx_height_1], true);  
         }
-        translate([0,-standoff_distance/2+shelf_depth/2, mount_height/2 -vtx_height_1/2 - shelf_height/2])            
+        translate([0,-standoff_distance/2+shelf_depth/2, mount_height/2 -vtx_height_1/2 - shelf_offset/2])            
         cube([vtx_width, shelf_depth, shelf_height], true);          
     }
 }
