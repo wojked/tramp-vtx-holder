@@ -24,7 +24,7 @@ VTX_ANTENNA_BEND = 14;
 VTX_ANTENNA_SHELF_HEIGHT = 6;
 VTX_PROTECTOR_WIDTH = 3.1;
 VTX_PROTECTOR_ANGLE = 20;
-VTX_PROTECTOR_HEIGHT = 3.7;
+VTX_PROTECTOR_HEIGHT = 2.5;
 
 
 
@@ -45,7 +45,7 @@ module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width,
 
             translate([0,-vtx_width,0])    
             cube([vtx_width, 3*vtx_width, 3*mount_height], true);  
-           
+                      
         }
         translate([0,-standoff_distance/2+shelf_depth/2, shelf_height/2])
         cube([vtx_width, shelf_depth, shelf_height], true);     
@@ -84,7 +84,8 @@ module antenna_protector(){
     difference(){             
         union(){
             translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT/2-shelf_height/2])
-            cylinder(VTX_ANTENNA_SHELF_HEIGHT, 4/2, 4/2, true);            
+            cylinder(VTX_ANTENNA_SHELF_HEIGHT, 4.5/2, 4.5/2, true);    
+//            cube([4.2, 4.2, VTX_ANTENNA_SHELF_HEIGHT], true);                        
             
             translate([VTX_ANTENNA_SHIFT-VTX_PROTECTOR_WIDTH,-VTX_ANTENNA_BEND/2,VTX_PROTECTOR_HEIGHT/2-shelf_height/2])
             rotate([0,0,VTX_PROTECTOR_ANGLE])
@@ -97,11 +98,12 @@ module antenna_protector(){
         };       
 
         translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT/2-shelf_height/2])
-        cylinder(VTX_ANTENNA_SHELF_HEIGHT*2, 2/2, 2/2, true);     
+        cylinder(VTX_ANTENNA_SHELF_HEIGHT*2, 2.4/2, 2.4/2, true);     
+//        cube([2, 2, VTX_ANTENNA_SHELF_HEIGHT*2], true);                                
  
         translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT-1])      
-        rotate([-20,0,0])
-        cube([2, 10, 4], true);                
+        rotate([-30,0,0])
+        cube([2.2, 10, 4], true);                
     }    
 }
 
