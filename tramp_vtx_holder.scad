@@ -1,10 +1,9 @@
 STANDOFF_DISTANCE = 30.5;
-STANDOFF_DIAMETER = 4.98;
-
+STANDOFF_DIAMETER = 4.83;
 
 MOUNTH_HEIGHT = 9.8;
-MOUNT_THICKNESS = 2;
 STANDOFF_HEIGHT = 30;
+MOUNT_BRIDGE_THICKNESS = 2;
 
 BRIDGE_OFFSET = -2.52; // [-2.5:0.1:2.5]
 TOLERANCE = 0.5; // [0:0.05:0.5]
@@ -21,7 +20,7 @@ VTX_TRACE_LENGTH = 24.47;
 
 VTX_ANTENNA_SHIFT = -2;
 VTX_ANTENNA_BEND = 14;
-VTX_ANTENNA_SHELF_HEIGHT = 6;
+VTX_ANTENNA_SHELF_HEIGHT = 8;
 VTX_PROTECTOR_WIDTH = 3.1;
 VTX_PROTECTOR_ANGLE = 20;
 VTX_PROTECTOR_HEIGHT = 2.5;
@@ -62,13 +61,12 @@ module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width,
         
         //Zip tie holder
         translate([0,-5,shelf_height/2])
-        ziptie_holder();     
+        ziptie_holder(20);     
     }    
 }
 
-module ziptie_holder(){
+module ziptie_holder(holder_width){
     shelf_height = 0.9;    
-    holder_width = 20;
     zip_tie = 2.8;
 
     difference(){
@@ -85,7 +83,6 @@ module antenna_protector(){
         union(){
             translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT/2-shelf_height/2])
             cylinder(VTX_ANTENNA_SHELF_HEIGHT, 4.5/2, 4.5/2, true);    
-//            cube([4.2, 4.2, VTX_ANTENNA_SHELF_HEIGHT], true);                        
             
             translate([VTX_ANTENNA_SHIFT-VTX_PROTECTOR_WIDTH,-VTX_ANTENNA_BEND/2,VTX_PROTECTOR_HEIGHT/2-shelf_height/2])
             rotate([0,0,VTX_PROTECTOR_ANGLE])
@@ -99,7 +96,6 @@ module antenna_protector(){
 
         translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT/2-shelf_height/2])
         cylinder(VTX_ANTENNA_SHELF_HEIGHT*2, 2.4/2, 2.4/2, true);     
-//        cube([2, 2, VTX_ANTENNA_SHELF_HEIGHT*2], true);                                
  
         translate([VTX_ANTENNA_SHIFT, -VTX_ANTENNA_BEND, VTX_ANTENNA_SHELF_HEIGHT-1])      
         rotate([-30,0,0])
@@ -109,7 +105,7 @@ module antenna_protector(){
 
 module holder(standoff_distance, standoff_diameter, mount_height, tolerance) {
     mount_diameter = standoff_diameter + 2;
-    mount_depth = 2;
+    mount_depth = MOUNT_BRIDGE_THICKNESS;
     mount_offset = -2;
     
     
@@ -131,15 +127,7 @@ module holder(standoff_distance, standoff_diameter, mount_height, tolerance) {
                   rotate([0,0, n*angle_step])
                   translate([0,-standoff_distance/2, 0]) 
                   bridge(standoff_distance, mount_depth, mount_height, standoff_diameter, mount_offset, tolerance, true);
-             };     
-    
-//            translate([-10,-5,0])
-//            rotate([0,0,70])
-//            bridge(standoff_distance-6, mount_depth, mount_height, standoff_diameter, mount_offset, tolerance, true);                
-//             
-//            translate([10,-5,0])
-//            rotate([0,0,290])
-//            bridge(standoff_distance-6, mount_depth, mount_height, standoff_diameter, mount_offset, tolerance, true);                             
+             };                                
          };
 
          for (n = [0:1:number_of_bridges]){
