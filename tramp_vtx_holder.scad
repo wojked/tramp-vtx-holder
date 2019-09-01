@@ -1,23 +1,24 @@
+/* [STANDOFFS] */
 STANDOFF_DISTANCE = 30.5;
 STANDOFF_DIAMETER = 4.83;
-
-MOUNTH_HEIGHT = 9.8;
 STANDOFF_HEIGHT = 30;
-MOUNT_BRIDGE_THICKNESS = 2;
 
-BRIDGE_OFFSET = -2.52; // [-2.5:0.1:2.5]
+
+/* [MOUNT] */
+MOUNTH_HEIGHT = 9;
+MOUNT_BRIDGE_THICKNESS = 2;
 TOLERANCE = 0.5; // [0:0.05:0.5]
 
+/* [VTX] */
 VTX_WIDTH = 17.30;
 VTX_HEIGHT_1 = 5.36;
 VTX_HEIGHT_2_ANTENNA = 6.22;
-
-VTX_CONNECTOR_HEIGHT = 6.57;
-VTX_CONNECTOR_DEPTH = 4.20;
-
 VTX_DEPTH = 31.96;
 VTX_TRACE_LENGTH = 24.47;
+ZIP_TIE = true;
 
+/* [ANTENNA] */
+VTX_ANTENNA = true;     // [true,false]
 VTX_ANTENNA_SHIFT = -2;
 VTX_ANTENNA_BEND = 14;
 VTX_ANTENNA_SHELF_HEIGHT = 8;
@@ -25,13 +26,21 @@ VTX_PROTECTOR_WIDTH = 3.1;
 VTX_PROTECTOR_ANGLE = 20;
 VTX_PROTECTOR_HEIGHT = 2.5;
 
+/* [META] */
+DEBUG = true;           // [true,false]
+FN = 64;                // [0:32:256]  
 
-
+/* [HIDDEN] */
 $fn = 128;
-//frame_skeleton(STANDOFF_DISTANCE, STANDOFF_DIAMETER, STANDOFF_HEIGHT);
+
+if(DEBUG){
+    frame_skeleton(STANDOFF_DISTANCE, STANDOFF_DIAMETER, STANDOFF_HEIGHT);
+}
+
 vtx_holder(STANDOFF_DISTANCE, STANDOFF_DIAMETER, MOUNTH_HEIGHT, VTX_WIDTH, VTX_HEIGHT_1, VTX_HEIGHT_2_ANTENNA, TOLERANCE);        
 
 module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width, vtx_height_1, vtx_height_2_antenna, tolerance) {
+    
     
     shelf_depth = 14.5;
     shelf_depth_outside = 10.5;
@@ -46,8 +55,12 @@ module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width,
             cube([vtx_width, 3*vtx_width, 3*mount_height], true);  
                       
         }
-        translate([0,-standoff_distance/2+shelf_depth/2, shelf_height/2])
-        cube([vtx_width, shelf_depth, shelf_height], true);     
+        
+        //shelf
+        union(){
+            translate([0,-standoff_distance/2+shelf_depth/2, shelf_height/2])
+            cube([vtx_width, shelf_depth, shelf_height], true);     
+        }
    
         translate([0,-standoff_distance/2-shelf_depth_outside/2, shelf_height/2])       
         cube([vtx_width, shelf_depth_outside, shelf_height], true);         
@@ -56,12 +69,16 @@ module vtx_holder(standoff_distance, standoff_diameter, mount_height, vtx_width,
         vtx(vtx_trace_height);   
         
         //Antenna holder
-        translate([0,-standoff_distance/2-shelf_depth_outside/2-standoff_diameter, shelf_height/2])        
-        antenna_protector();
+        if(VTX_ANTENNA){
+            translate([0,-standoff_distance/2-shelf_depth_outside/2-standoff_diameter, shelf_height/2])        
+            antenna_protector();
+        }
         
         //Zip tie holder
-        translate([0,-5,shelf_height/2])
-        ziptie_holder(20);     
+        if(ZIP_TIE){
+            translate([0,-5,shelf_height/2])
+            ziptie_holder(20);     
+        }
     }    
 }
 
